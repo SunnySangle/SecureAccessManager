@@ -49,4 +49,33 @@ This project is designed to:
 
 ### 2️⃣ Step 2: Create and Attach Custom IAM Policy
 
+Create a new **Inline Policy** and paste the following JSON:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowAllEC2Actions",
+      "Effect": "Allow",
+      "Action": "ec2:*",
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyStopOrTerminateProduction",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:StopInstances",
+        "ec2:TerminateInstances"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/Environment": "Production"
+        }
+      }
+    }
+  ]
+}
+
 
